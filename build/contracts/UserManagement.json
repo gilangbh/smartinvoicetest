@@ -1,0 +1,125 @@
+{
+  "contractName": "UserManagement",
+  "abi": [
+    {
+      "constant": true,
+      "inputs": [
+        {
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "name": "admins",
+      "outputs": [
+        {
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "payable": false,
+      "type": "function",
+      "stateMutability": "view"
+    }
+  ],
+  "bytecode": "0x6060604052341561000f57600080fd5b61010e8061001e6000396000f300606060405260043610603f576000357c0100000000000000000000000000000000000000000000000000000000900463ffffffff16806314bfd6d0146044575b600080fd5b3415604e57600080fd5b6062600480803590602001909190505060a4565b604051808273ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff16815260200191505060405180910390f35b60008181548110151560b257fe5b90600052602060002090016000915054906101000a900473ffffffffffffffffffffffffffffffffffffffff16815600a165627a7a72305820516a030c564d121bf013412052e6fdfe05cbe94eed3757df1575274ee6f0af1b0029",
+  "deployedBytecode": "0x606060405260043610603f576000357c0100000000000000000000000000000000000000000000000000000000900463ffffffff16806314bfd6d0146044575b600080fd5b3415604e57600080fd5b6062600480803590602001909190505060a4565b604051808273ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff16815260200191505060405180910390f35b60008181548110151560b257fe5b90600052602060002090016000915054906101000a900473ffffffffffffffffffffffffffffffffffffffff16815600a165627a7a72305820516a030c564d121bf013412052e6fdfe05cbe94eed3757df1575274ee6f0af1b0029",
+  "sourceMap": "28:58:3:-;;;;;;;;;;;;;;;;;",
+  "deployedSourceMap": "28:58:3:-;;;;;;;;;;;;;;;;;;;;;;;;59:23;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;:::o",
+  "source": "pragma solidity ^0.4.15;\r\n\r\ncontract UserManagement {\r\n    address[] public admins;\r\n}",
+  "sourcePath": "C:\\Side\\dnb\\smartinvoice\\contracts\\UserManagement.sol",
+  "ast": {
+    "attributes": {
+      "absolutePath": "/C/Side/dnb/smartinvoice/contracts/UserManagement.sol",
+      "exportedSymbols": {
+        "UserManagement": [
+          842
+        ]
+      }
+    },
+    "children": [
+      {
+        "attributes": {
+          "literals": [
+            "solidity",
+            "^",
+            "0.4",
+            ".15"
+          ]
+        },
+        "id": 838,
+        "name": "PragmaDirective",
+        "src": "0:24:3"
+      },
+      {
+        "attributes": {
+          "baseContracts": [
+            null
+          ],
+          "contractDependencies": [
+            null
+          ],
+          "contractKind": "contract",
+          "documentation": null,
+          "fullyImplemented": true,
+          "linearizedBaseContracts": [
+            842
+          ],
+          "name": "UserManagement",
+          "scope": 843
+        },
+        "children": [
+          {
+            "attributes": {
+              "constant": false,
+              "name": "admins",
+              "scope": 842,
+              "stateVariable": true,
+              "storageLocation": "default",
+              "type": "address[] storage ref",
+              "value": null,
+              "visibility": "public"
+            },
+            "children": [
+              {
+                "attributes": {
+                  "length": null,
+                  "type": "address[] storage pointer"
+                },
+                "children": [
+                  {
+                    "attributes": {
+                      "name": "address",
+                      "type": "address"
+                    },
+                    "id": 839,
+                    "name": "ElementaryTypeName",
+                    "src": "59:7:3"
+                  }
+                ],
+                "id": 840,
+                "name": "ArrayTypeName",
+                "src": "59:9:3"
+              }
+            ],
+            "id": 841,
+            "name": "VariableDeclaration",
+            "src": "59:23:3"
+          }
+        ],
+        "id": 842,
+        "name": "ContractDefinition",
+        "src": "28:58:3"
+      }
+    ],
+    "id": 843,
+    "name": "SourceUnit",
+    "src": "0:86:3"
+  },
+  "compiler": {
+    "name": "solc",
+    "version": "0.4.18+commit.9cf6e910.Emscripten.clang"
+  },
+  "networks": {},
+  "schemaVersion": "1.0.1",
+  "updatedAt": "2017-12-18T14:27:03.212Z"
+}
