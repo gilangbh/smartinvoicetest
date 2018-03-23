@@ -1,5 +1,7 @@
 pragma solidity ^0.4.15;
 
+import "./CredentialManager.sol";
+
 /**
  * Copyright 2016 Everex https://everex.io
  *
@@ -117,6 +119,9 @@ contract Chainy is owned {
     // Chainy viewer url
     string CHAINY_URL;
 
+    CredentialManager private credentialManager;
+    bool private isCredentialManagerSet;
+
     // Configuration
     mapping(string => uint256) private chainyConfig;
 
@@ -129,7 +134,9 @@ contract Chainy is owned {
     address private receiverAddress;
 
     struct data {uint256 timestamp; string json; address sender;}
+
     mapping (string => data) private chainy;
+    mapping (string => mapping(address => bool)) private chainyAccess;
 
     event chainyShortLink(uint256 timestamp, string code);
 
@@ -139,6 +146,13 @@ contract Chainy is owned {
         // change the block offset to 1000000 to use contract in testnet
         setConfig("blockoffset", 100000);
         setChainyURL("");
+        isCredentialManagerSet = false;
+    }
+
+    function setCredentialManager(address _cred) {
+        require(!isCredentialManagerSet);
+        credentialManager = CredentialManager(_cred);
+        isCredentialManagerSet = true;
     }
 
     // Sets new Chainy viewer URL
@@ -192,6 +206,7 @@ contract Chainy is owned {
         });
 
         lastChainy[msg.sender] = code;
+        chainyAccess[code][msg.sender] = true;
 
         // Fire event
         var link = strUtils.concat(CHAINY_URL, code);
@@ -209,7 +224,17 @@ contract Chainy is owned {
 
     // Get record JSON
     function getChainyData(string code) constant returns (string) {
-        return chainy[code].json;
+        if (chainyAccess[code][msg.sender] == true) {
+            return chainy[code].json;
+        } else {
+            require(credentialManager.isInRole(0,msg.sender));
+            return chainy[code].json;
+        }
+    }
+
+    function setChainyAccess (string code, address _target) {
+        require(credentialManager.isInRole(0,msg.sender));
+        chainyAccess[code][_target] = true;
     }
 
     // Get record sender
