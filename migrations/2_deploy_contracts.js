@@ -8,6 +8,6 @@ module.exports = function(deployer) {
   deployer.deploy(Chainy);
   //deployer.deploy(SimpleStorage);
   deployer.deploy(Verification);
-  deployer.deploy(InvoiceToken);
   deployer.deploy(CredentialManager);
+  deployer.deploy(InvoiceToken);
 };

@@ -16,6 +16,4 @@ contract CredentialManager {
     function isInRole(uint role, address user) constant public returns (bool) {
         return userRoles[role][user];
     }
-
-
 }
