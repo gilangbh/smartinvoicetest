@@ -21,6 +21,8 @@ contract InvoiceToken is ERC721Token {
     CredentialManager private credentialManager;
     bool private isCredentialManagerSet;
     mapping (uint256 => mapping(address => bool)) private invoiceAccess;
+    
+    event InvoiceMinted(uint, address, address);
 
     function InvoiceToken () {
         isCredentialManagerSet = false;
@@ -33,6 +35,7 @@ contract InvoiceToken is ERC721Token {
     }
 
     function mint(address _to, string _chainyCode, address _supplier, address _investor, address _buyer, uint _percentageFunding, uint _percentageInterest) public {
+        require(msg.sender == _supplier);
         uint last = totalSupply();
         super._mint(_to, last);
         invoiceMetadata[last].chainy = _chainyCode;
@@ -45,6 +48,7 @@ contract InvoiceToken is ERC721Token {
         invoiceAccess[last][_supplier] = true;
         invoiceAccess[last][_investor] = true;
         invoiceAccess[last][_buyer] = true;
+        InvoiceMinted(last,_supplier,_to);
     }
 
     function burn(uint256 _tokenId) public {
