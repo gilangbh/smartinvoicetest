@@ -22,7 +22,7 @@ contract InvoiceToken is ERC721Token {
     bool private isCredentialManagerSet;
     mapping (uint256 => mapping(address => bool)) private invoiceAccess;
     
-    event InvoiceMinted(uint, address, address);
+    event InvoiceMinted(uint tokenId, address supplier, address owner);
 
     function InvoiceToken () {
         isCredentialManagerSet = false;
