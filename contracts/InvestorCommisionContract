@@ -55,7 +55,7 @@ contract InvestorCommisionContract {
         
         rateProposal[investor] = newRate;
         rateTypeProposal[investor] = newRateType;
-	assert(rateProposal[investor >= 0);
+	assert(rateProposal[investor] >= 0);
     }
     
     //be careful when reading rate in regard to contract's decimals value
@@ -74,7 +74,7 @@ contract InvestorCommisionContract {
         rateType[investor] = rateTypeProposal[investor];
         
         assert(rate[investor] == rateProposal[investor] && rateType[investor] == rateTypeProposal[investor]);
-	assert(rate[investor >= 0);
+	assert(rate[investor] >= 0);
         rateTypeProposal[investor] = RateType.NONE;
         rateProposal[investor] = 0; 
     }
