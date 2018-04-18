@@ -17,7 +17,7 @@ contract InvestorCommisionContract {
     mapping(address => RateType) private rateTypeProposal;
     
     function InvestorAdminContract(CredentialManager credmgr) {
-        require(isCredentialManagerSet == false);
+    	require(isCredentialManagerSet == false);
 	credentialManager = credmgr;
 	isCredentialManagerSet = true;
     }
@@ -32,6 +32,9 @@ contract InvestorCommisionContract {
     
     //be careful when reading rate in regard to contract's decimals value
     function getFee(address investor, uint256 val) public constant returns (uint256) {
+    	require(credentialManager.isInRole(0,msg.sender) || 
+            (msg.sender == investor && credentialManager.isInRole(3,msg.sender)));
+        
         uint256 fee;
         RateType _;
         
