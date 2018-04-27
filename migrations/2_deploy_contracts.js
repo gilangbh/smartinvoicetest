@@ -10,5 +10,5 @@ module.exports = function(deployer) {
   deployer.deploy(Verification);
   deployer.deploy(CredentialManager);
   deployer.deploy(InvoiceToken);
-  deployer.deploy(InvestorCommisionContract);
+  deployer.deploy(InvestorCommisionContract, CredentialManager);
 };
