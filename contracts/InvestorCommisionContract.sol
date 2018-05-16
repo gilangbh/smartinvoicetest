@@ -73,6 +73,7 @@ contract InvestorCommisionContract {
         require(credentialManager.isInRole(3,msg.sender));
         
         address investor = msg.sender;
+	require(rateTypeProposal[investor] != RateType.NONE && rateProposal[investor] > 0);
         rate[investor] = rateProposal[investor];
         rateType[investor] = rateTypeProposal[investor];
         
