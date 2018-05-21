@@ -12,6 +12,8 @@ contract InvoiceToken is ERC721Token {
         address investor;
         uint percentageFunding;
         uint percentageInterest;
+        uint iCommision;
+        uint sCommision;
     }
     
     string constant private TOKENNAME = "Invoice Token";
@@ -34,7 +36,7 @@ contract InvoiceToken is ERC721Token {
         isCredentialManagerSet = true;
     }
 
-    function mint(address _to, string _chainyCode, address _supplier, address _investor, address _buyer, uint _percentageFunding, uint _percentageInterest) public {
+    function mint(address _to, string _chainyCode, address _supplier, address _investor, address _buyer, uint _percentageFunding, uint _percentageInterest, uint _iCommision, uint _sCommision) public {
         require(msg.sender == _supplier);
         uint last = totalSupply();
         super._mint(_to, last);
@@ -44,6 +46,9 @@ contract InvoiceToken is ERC721Token {
         invoiceMetadata[last].investor = _investor;
         invoiceMetadata[last].percentageFunding = _percentageFunding;
         invoiceMetadata[last].percentageInterest = _percentageInterest;
+
+        invoiceMetadata[last].iCommision = _iCommision;
+        invoiceMetadata[last].sCommision = _sCommision;
 
         invoiceAccess[last][_supplier] = true;
         invoiceAccess[last][_investor] = true;

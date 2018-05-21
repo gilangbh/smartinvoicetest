@@ -1,9 +1,7 @@
 pragma solidity ^0.4.0;
-import "./SafeMath.sol";
 import "./CredentialManager.sol";
 
 contract SupplierCommisionContract {
-    using SafeMath for uint256;
     enum RateType {NONE, FLAT_RATE, DYNAMIC_RATE}
     
     uint256 constant public decimals = 3;
@@ -15,11 +13,13 @@ contract SupplierCommisionContract {
     
     mapping(address => uint256) private rateProposal;
     mapping(address => RateType) private rateTypeProposal;
-    
+
+    event SupplierCommisionStatus(string proposalStatus, address supplier);
+
     function SupplierAdminContract(CredentialManager credmgr) {
     	require(isCredentialManagerSet == false);
-	credentialManager = credmgr;
-	isCredentialManagerSet = true;
+	    credentialManager = credmgr;
+	    isCredentialManagerSet = true;
     }
     
     //be careful when reading rate in regard to contract's decimals value
@@ -29,36 +29,25 @@ contract SupplierCommisionContract {
             
         return (rate[supplier], rateType[supplier]);
     }
-    
-    //be careful when reading rate in regard to contract's decimals value
-    function getFee(address supplier, uint256 val) public constant returns (uint256) {
-    	require(credentialManager.isInRole(0,msg.sender) || 
-            (msg.sender == supplier && credentialManager.isInRole(1,msg.sender)));
-        
-        uint256 fee;
-        RateType _;
-        
-        if(rateType[supplier] == RateType.FLAT_RATE){
-            (fee, _) = getRate(supplier);
-        } else {
-            uint256 _rate;
-            (_rate, _) = getRate(supplier);
-            _rate = _rate.div(100);
-            fee = val.mul(_rate);
-        }
-        
-        assert(fee >= 0);
-        return fee;
+
+    //be carefule when setting rate in regard to contract's decimals value
+    function setRate(address supplier, uint256 newRate, RateType newRateType) public {
+        require(credentialManager.isInRole(0,msg.sender));
+        require(credentialManager.isInRole(1,supplier));
+        require(newRate > 0 && newRateType != RateType.NONE);
+        rate[supplier] = newRate;
+        rateType[supplier] = newRateType;
+        SupplierCommisionStatus("rateChanged", supplier);
     }
     
     //be carefule when setting rate in regard to contract's decimals value
     function proposeRate(address supplier, uint256 newRate, RateType newRateType) public {
         require(credentialManager.isInRole(0,msg.sender));
         require(credentialManager.isInRole(1,supplier));
-        
+        require(newRate > 0 && newRateType != RateType.NONE);
         rateProposal[supplier] = newRate;
         rateTypeProposal[supplier] = newRateType;
-	assert(rateProposal[supplier] >= 0);
+        SupplierCommisionStatus("proposalAdded", supplier);
     }
     
     //be careful when reading rate in regard to contract's decimals value
@@ -73,14 +62,24 @@ contract SupplierCommisionContract {
         require(credentialManager.isInRole(1,msg.sender));
         
         address supplier = msg.sender;
-	require(rateTypeProposal[supplier] != RateType.NONE && rateProposal[supplier] > 0);
-
         rate[supplier] = rateProposal[supplier];
         rateType[supplier] = rateTypeProposal[supplier];
         
         assert(rate[supplier] == rateProposal[supplier] && rateType[supplier] == rateTypeProposal[supplier]);
-	assert(rate[supplier] >= 0);
+	    assert(rate[supplier] > 0 && rateTypeProposal[supplier] != RateType.NONE);
         rateTypeProposal[supplier] = RateType.NONE;
         rateProposal[supplier] = 0; 
+
+        SupplierCommisionStatus("proposalAccepted", supplier);
+    }
+
+    function rejectRateProposal() public {
+        require(credentialManager.isInRole(1,msg.sender));
+        
+        address supplier = msg.sender;
+        rateTypeProposal[supplier] = RateType.NONE;
+        rateProposal[supplier] = 0; 
+
+        SupplierCommisionStatus("proposalRejected", supplier);
     }
 }
