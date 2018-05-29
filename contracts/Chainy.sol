@@ -213,6 +213,12 @@ contract Chainy is owned {
         chainyShortLink(block.timestamp, link);
     }
 
+    function getChainyAccess(string _code,address user) constant returns (bool) {
+        var canAccess = chainyAccess[_code][user];
+
+        return canAccess;
+    }
+
     function getLastChainy(address sender) constant returns (string) {
         return lastChainy[sender];
     }
