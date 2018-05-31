@@ -16,9 +16,9 @@ contract InvestorCommisionContract {
 
     event InvestorCommisionStatus(string proposalStatus, address investor);
 
-    function InvestorAdminContract(CredentialManager credmgr) {
+    function setCredentialManager(address credmgr) {
     	require(isCredentialManagerSet == false);
-	    credentialManager = credmgr;
+	    credentialManager = CredentialManager(credmgr);
 	    isCredentialManagerSet = true;
     }
     

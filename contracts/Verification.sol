@@ -9,19 +9,10 @@ contract Verification {
     mapping (string => address) rejectedByBuyer;
     mapping (string => address) rejectedByAdmin;
 
-    Chainy private chainy;
-    bool private isChainySet;
-    
     event VerifyEvent(string chainy, bool verified, address verifier);
 
     function Verification() public {
         
-    }
-
-    function setChainy(address _chainyAddress) {
-        require(!isChainySet);
-        chainy = Chainy(_chainyAddress);
-        isChainySet = true;
     }
 
     function verifyFromBuyer(string _chainy, address _buyer) public {

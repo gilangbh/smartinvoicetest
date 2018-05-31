@@ -16,9 +16,9 @@ contract SupplierCommisionContract {
 
     event SupplierCommisionStatus(string proposalStatus, address supplier);
 
-    function SupplierAdminContract(CredentialManager credmgr) {
+    function setCredentialManager(address credmgr) {
     	require(isCredentialManagerSet == false);
-	    credentialManager = credmgr;
+	    credentialManager = CredentialManager(credmgr);
 	    isCredentialManagerSet = true;
     }
     
@@ -39,7 +39,7 @@ contract SupplierCommisionContract {
         rateType[supplier] = newRateType;
         SupplierCommisionStatus("rateChanged", supplier);
     }
-    
+
     //be carefule when setting rate in regard to contract's decimals value
     function proposeRate(address supplier, uint256 newRate, RateType newRateType) public {
         require(credentialManager.isInRole(0,msg.sender));

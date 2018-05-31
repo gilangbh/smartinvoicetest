@@ -12,8 +12,8 @@ contract InvoiceToken is ERC721Token {
         address investor;
         uint percentageFunding;
         uint percentageInterest;
-        uint iCommision;
-        uint sCommision;
+        uint iCommission;
+        uint sCommission;
     }
     
     string constant private TOKENNAME = "Invoice Token";
@@ -36,7 +36,7 @@ contract InvoiceToken is ERC721Token {
         isCredentialManagerSet = true;
     }
 
-    function mint(address _to, string _chainyCode, address _supplier, address _investor, address _buyer, uint _percentageFunding, uint _percentageInterest, uint _iCommision, uint _sCommision) public {
+    function mint(address _to, string _chainyCode, address _supplier, address _investor, address _buyer, uint _percentageFunding, uint _percentageInterest, uint _iCommission, uint _sCommission) public {
         require(msg.sender == _supplier);
         uint last = totalSupply();
         super._mint(_to, last);
@@ -47,8 +47,8 @@ contract InvoiceToken is ERC721Token {
         invoiceMetadata[last].percentageFunding = _percentageFunding;
         invoiceMetadata[last].percentageInterest = _percentageInterest;
 
-        invoiceMetadata[last].iCommision = _iCommision;
-        invoiceMetadata[last].sCommision = _sCommision;
+        invoiceMetadata[last].iCommission = _iCommission;
+        invoiceMetadata[last].sCommission = _sCommission;
 
         invoiceAccess[last][_supplier] = true;
         invoiceAccess[last][_investor] = true;
@@ -89,6 +89,23 @@ contract InvoiceToken is ERC721Token {
                 invoiceMetadata[_tokenId].buyer,
                 invoiceMetadata[_tokenId].percentageFunding,
                 invoiceMetadata[_tokenId].percentageInterest
+            );
+        }
+    }
+    
+    function tokenCommission(uint256 _tokenId) public constant returns (uint iCommission, uint sCommission) {
+        if (invoiceAccess[_tokenId][msg.sender] == true) {
+            return 
+            (
+                invoiceMetadata[_tokenId].iCommission,
+                invoiceMetadata[_tokenId].sCommission
+            );
+        } else {
+            require(credentialManager.isInRole(0,msg.sender));
+            return 
+            (
+                invoiceMetadata[_tokenId].iCommission,
+                invoiceMetadata[_tokenId].sCommission
             );
         }
     }
